@@ -1,0 +1,35 @@
+#include "enlazadaCircular.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+  lista *list;
+  list = (lista *)malloc(sizeof(lista));
+  insertEmptyList(list,"Actividad 1", "prueba", 1130, 1490);
+  sortedInsert(list, "Actividad 2", "",900, 1320);
+  sortedInsert(list, "Actividad 3", "hola", 1430, 1234);
+  sortedInsert(list, "Actividad 4", "hola", 730, 1334);
+  sortedInsert(list, "Actividad 5", "hola", 1730, 1334);
+  sortedInsert(list, "Actividad 6", "hola", 430, 1334);
+  imprimir(list);
+  calendario *cal;
+  cal = (calendario *)malloc(sizeof(calendario));
+  inicializar(cal);
+  insertarVacia(cal, 2012,10, 10);
+  printf("El nodo de incicio es: %d", cal->inicio->year);
+  insertarInicio(cal ,300,78,1);
+  insertarInicio(cal ,350,78,1);
+  insertarInicio(cal ,450,78,1);
+  insertarInicio(cal, 8,9,10);
+  insertarInicio(cal, 11,12,13);
+  dia *nodo = insertarDespues(cal, 2, 500, 89,0);
+  imprimirNodos(cal);
+  imprimirNodos(cal);
+  printf("El nodo en vigilancia es: Anterior: %p - Actual: %p - Siguiente: %p", nodo->anterior, nodo, nodo->siguiente);
+  insertarInicio(cal,14,15,16 );
+  printf("El nodo en vigilancia es: Anterior: %p - Actual: %p - Siguiente: %p", nodo->anterior, nodo, nodo->siguiente);
+
+
+  return -1;
+ }

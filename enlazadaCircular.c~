@@ -1,0 +1,138 @@
+#include "enlazadaCircular.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void inicializar(calendario *cal){
+  cal = (calendario *)malloc(sizeof(calendario));
+  cal->inicio = (dia *)malloc(sizeof(dia));
+  cal->inicio->anterior = cal->inicio;
+  cal -> inicio ->siguiente = cal->inicio;
+  cal->tam = 0;
+}
+
+int insertarVacia(calendario *cal, int ano, int mes, int day){
+  dia *nuevoVa;
+  if((nuevoVa = (dia *) malloc(sizeof(dia))) == NULL)
+    return -1;
+  nuevoVa->year = ano;
+  nuevoVa->month = mes;
+  nuevoVa->day = day;
+  nuevoVa->siguiente = nuevoVa;
+  nuevoVa->anterior = nuevoVa;
+  cal->inicio = nuevoVa;
+  cal->tam++;
+  return 0;
+}
+
+int insertarInicio(calendario *cal, int ano, int mes, int day){
+  dia *nuevoInicio;
+  if((nuevoInicio = (dia *)malloc(sizeof(dia))) == NULL)
+    return -1;
+  printf("%p", nuevoInicio);
+  printf("\n **************Antes de la insercion**********\n");
+  imprimirNodos(cal);
+    printf("\n **************Fin listado**********\n");
+  nuevoInicio->year = ano;
+  nuevoInicio->month = mes;
+  nuevoInicio->day = day;
+  nuevoInicio->anterior = cal->inicio->anterior;
+  nuevoInicio->siguiente = cal->inicio;
+  cal->inicio->anterior = nuevoInicio;
+  cal->inicio = nuevoInicio;
+  cal->inicio->anterior->siguiente = nuevoInicio;
+  cal->tam++;
+
+}
+ 
+
+dia *insertarDespues(calendario *cal, int pos, int  ano, int mes, int day){
+  dia *nuevoNodo, *current;
+  if((nuevoNodo = (dia *)malloc(sizeof(day)))==NULL)
+    return nuevoNodo;
+  else{
+    nuevoNodo->year = ano;
+    nuevoNodo->month = mes;
+    nuevoNodo->day = day;
+    current = cal->inicio;
+    for(int i = 1; i<pos; i=i+1){
+      printf("\n El nodo es: %p - %d\n", current, current->year);
+      current = current->siguiente;
+    }
+    nuevoNodo->siguiente = current->siguiente;
+    nuevoNodo->anterior = current;
+    current->siguiente->anterior = nuevoNodo;
+    current->siguiente = nuevoNodo;
+    cal->tam++;
+    return nuevoNodo;
+  }
+
+}
+
+dia* buscarNodo(calendario *cal, int  ano, int mes, int day){
+  dia *current;
+  current = cal->inicio;
+  printf("La iteración va por: %d\n", current->year);
+  while(ano >= current->year && current->siguiente != cal->inicio)
+    {
+      printf("Entre al ciclo. La iteración va por: %d\n", current->year);
+      if(ano == current->year)
+	{
+	  break;
+	}
+	else{
+	printf("La iteración va por: %d\n", current->year);
+	current = current->siguiente;
+	}
+    }
+
+  return current;
+}
+
+dia *insertarAntes(dia *node, int ano, int mes, int day )
+{
+  dia *nuevo;
+  dia *prevNode = node->anterior;
+
+  nuevo = (dia *) malloc (sizeof(dia));
+  nuevo->year = ano;
+  nuevo-> month = mes;
+  nuevo->day = day;
+  nuevo->siguiente = node;
+  nuevo->anterior = prevNode;
+  node->anterior = nuevo;
+  prevNode->siguiente = node;
+
+  return nuevo;
+}
+
+void imprimirCal(calendario *cal){
+  dia *current;
+  current = cal->inicio;
+  printf("\n************IMPRESION DE LISTA DOBLEMENTE ENLAZADA CIRCULAR ********************* \n");
+  do{
+    printf("%d %d %d \n",current->year, current->month,current->day);
+    current = current->siguiente;
+  }while(current!= cal->inicio);
+}
+
+void imprimirNodos(calendario *cal){
+ dia *current;
+  current = cal->inicio;
+  printf("\n************IMPRESION DE LISTA DE NODOS ********************* \n");
+  do{
+    printf("Anterior %p - Actual %p -Siguiente %p- %d %d %d \n",current->anterior, current, current->siguiente,current->year, current->month,current->day);
+    current = current->siguiente;
+  }while(current != cal->inicio);
+}
+
+void imprimirVol(calendario *cal){
+  dia *current;
+  current = cal->inicio->anterior;
+  printf("\n************IMPRESION DE LISTA DOBLEMENTE ENLAZADA CIRCULAR AL REVES ********************* \n");
+  do{
+    printf("%d %d %d \n",current->year, current->month,current->day);
+    current = current->anterior;
+  }while(current != cal->inicio-> anterior);
+}
+
